@@ -1,0 +1,7 @@
+[project]
+name = "llm-code-review"
+version = "0.1.0"
+description = "Script to review pull/merge requests with an LLM"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["click", "requests"]
