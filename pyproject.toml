@@ -6,4 +6,4 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = ["click", "requests"]
 [project.scripts]
-llm-code-review = "llm_code_review.main:main"
+llm-code-review = "main:main"

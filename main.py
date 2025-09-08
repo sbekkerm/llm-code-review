@@ -1,6 +1,5 @@
 import os
 import click
-import sys
 import time
 import random
 from typing import Optional, List
@@ -154,13 +153,13 @@ def multiple_pass(diff_text: str, system_text: str, url: str, key: str, model: s
 
 
 @click.command()
-@click.option('--diff', 'diff_path', type=click.Path(exists=True, dir_okay=False), default=None,
-              help='Path to a unified diff file. If omitted, reads stdin.')
+@click.option('--diff', 'diff_path', required=True,
+              help='Path to a unified diff file')
 @click.option('--out', 'out_path', type=click.Path(dir_okay=False), default='code-review.md',
-              help='Where to write the Markdown PR review.')
+              help='Where to write the Markdown PR review')
 @click.option('--agents-path', type=click.Path(exists=True, dir_okay=False), default=None,
               help='Optional path to AGENTS.md. Defaults to .github/AGENTS.md or AGENTS.md')
-def main(diff_path: Optional[str], out_path: str, agents_path: Optional[str]):
+def main(diff_path: str, out_path: str, agents_path: Optional[str]):
     url = os.environ.get('LLM_API_URL')
     key = os.environ.get('LLM_API_KEY')
     model = os.environ.get('LLM_MODEL_NAME')
@@ -174,10 +173,7 @@ def main(diff_path: Optional[str], out_path: str, agents_path: Optional[str]):
         click.echo('Missing required env vars: LLM_API_URL, LLM_API_KEY, LLM_MODEL_NAME', err=True)
         raise SystemExit(1)
 
-    if diff_path:
-        diff_text = _load_text(diff_path)
-    else:
-        diff_text = sys.stdin.read()
+    diff_text = _load_text(diff_path)
 
     if not diff_text.strip():
         print('Error: No changes detected')
